@@ -213,7 +213,7 @@
 
           <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-inner">
             <label class="block text-sm font-bold text-gray-700 mb-1">📅 วันเดือนปีเกิด</label>
-            <input v-model="form.date_of_birth" @change="calculateRetirement" required type="date" class="block w-full rounded-lg border-gray-300 py-2 bg-white text-gray-900 shadow-sm focus:ring-2 focus:ring-green-500 sm:text-sm" />
+            <ThaiDatePicker v-model="form.date_of_birth" @change="calculateRetirement" :required="true" />
           </div>
 
           <div class="md:col-span-2 bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-xl border border-green-200 flex items-center gap-4">
@@ -270,11 +270,11 @@
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wide">ตั้งแต่</label>
-                            <input v-model="rh.start_date" type="date" class="block w-full rounded-lg border-gray-300 py-2 sm:text-sm" />
+                            <ThaiDatePicker v-model="rh.start_date" />
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wide">ถึง</label>
-                            <input v-model="rh.end_date" type="date" class="block w-full rounded-lg border-gray-300 py-2 sm:text-sm" />
+                            <ThaiDatePicker v-model="rh.end_date" />
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wide">รวมเวลา</label>
@@ -321,11 +321,11 @@
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wide">ตั้งแต่</label>
-                            <input v-model="ph.start_date" type="date" class="block w-full rounded-lg border-gray-300 py-2 sm:text-sm" />
+                            <ThaiDatePicker v-model="ph.start_date" />
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wide">ถึง</label>
-                            <input v-model="ph.end_date" type="date" class="block w-full rounded-lg border-gray-300 py-2 sm:text-sm" />
+                            <ThaiDatePicker v-model="ph.end_date" />
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wide">รวมเวลา</label>
@@ -432,7 +432,7 @@
                         </div>
                         <div class="md:col-span-4">
                             <label class="block text-sm font-bold text-gray-700 mb-1">วันเดือนปีเกิด</label>
-                            <input v-model="child.birth_date" type="date" class="block w-full rounded-lg border-gray-300 py-2 sm:text-sm bg-gray-50 focus:bg-white text-gray-900" />
+                            <ThaiDatePicker v-model="child.birth_date" />
                         </div>
 
                         <!-- Dynamic Age -->
@@ -531,6 +531,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import api from '../services/api';
+import ThaiDatePicker from '../components/ThaiDatePicker.vue';
 
 const route = useRoute();
 const router = useRouter();
