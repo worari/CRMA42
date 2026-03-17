@@ -333,13 +333,14 @@ const loadStats = async () => {
         const mapData = await api.getMapDistribution();
         provinces.value = mapData.data;
 
-        await nextTick(); // Wait for DOM flush so map container is ready
-        initMap();
-        
     } catch (e) {
         console.error('Failed to load dashboard', e);
     } finally {
         loading.value = false;
+        await nextTick(); // Wait for DOM flush so map container is ready
+        if (document.getElementById('leaflet-map-container')) {
+            initMap();
+        }
     }
 };
 

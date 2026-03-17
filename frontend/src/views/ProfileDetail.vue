@@ -238,7 +238,25 @@ const printPdf = () => {
 };
 
 const printDoc = () => {
-    alert("DOC Export is functionally mocked in local development. For production this would utilize docx library to generate Word docs.");
+    const element = document.getElementById('bio-print-area');
+    const header = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    <head><meta charset='utf-8'><title>ประวัติ ${profile.value.first_name}</title></head><body>`;
+    const footer = "</body></html>";
+    
+    // Export by treating HTML block as a Word document (.doc)
+    const sourceHTML = header + element.innerHTML + footer;
+    const blob = new Blob(['\ufeff', sourceHTML], {
+        type: 'application/msword'
+    });
+    
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `ประวัติ_${profile.value.first_name}_${profile.value.last_name}.doc`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 };
 
 onMounted(() => {
