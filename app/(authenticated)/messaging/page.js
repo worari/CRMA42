@@ -368,7 +368,7 @@ export default function MessagingPage() {
                 <p className="font-medium mb-2">📌 สิ่งที่ Bot จะทำเมื่อมีคนติดตาม:</p>
                 <ul className="space-y-1 text-blue-700">
                   <li>• ส่งข้อความต้อนรับพร้อม LINE User ID</li>
-                  <li>• ผู้ใช้พิมพ์ "ID" เพื่อดู User ID ของตัวเอง</li>
+                  <li>• ผู้ใช้พิมพ์ &quot;ID&quot; เพื่อดู User ID ของตัวเอง</li>
                   <li>• นำ ID ไปกรอกในโปรไฟล์เพื่อรับแจ้งเตือน</li>
                 </ul>
               </div>
@@ -383,7 +383,7 @@ export default function MessagingPage() {
           <Info size={18} className="text-gray-400 shrink-0 mt-0.5" />
           <div className="text-xs text-gray-500 space-y-1">
             <p>• ระบบส่งได้เฉพาะสมาชิกที่มี LINE ID บันทึกในโปรไฟล์</p>
-            <p>• สมาชิกรับ LINE ID ได้โดยติดตาม Bot แล้วพิมพ์ "ID"</p>
+            <p>• สมาชิกรับ LINE ID ได้โดยติดตาม Bot แล้วพิมพ์ &quot;ID&quot;</p>
             <p>• LINE Messaging API สามารถส่งได้สูงสุด 500 คน/ครั้ง (Multicast)</p>
           </div>
         </div>

@@ -645,7 +645,7 @@ export default function EventsPage() {
               </div>
             </div>
             <p className="mb-6 rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
-              <strong>"{selectedEvent.title}"</strong>
+              <strong>&quot;{selectedEvent.title}&quot;</strong>
             </p>
             <div className="flex gap-3">
               <button onClick={() => setModalType(null)} className="ux-btn-secondary flex-1 px-4 py-2.5 text-sm">

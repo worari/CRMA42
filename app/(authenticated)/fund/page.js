@@ -736,7 +736,7 @@ export default function FundPage() {
             <p className="text-green-800 text-sm font-medium mb-2">💡 เกี่ยวกับกองทุนรุ่น</p>
             <ul className="text-green-700 text-sm space-y-1">
               <li>• กองทุนใช้สำหรับสนับสนุนกิจกรรมต่างๆ ของรุ่น</li>
-              <li>• ทุกรายการจะอยู่ในสถานะ "รออนุมัติ" จนกว่า Admin จะตรวจสอบ</li>
+              <li>• ทุกรายการจะอยู่ในสถานะ &quot;รออนุมัติ&quot; จนกว่า Admin จะตรวจสอบ</li>
               <li>• กรุณาแนบสลิปการโอนเงินทุกครั้ง</li>
             </ul>
           </div>
