@@ -12,6 +12,7 @@
         <button @click="$router.push(`/form/${profile.id}`)" class="bg-amber-100 text-amber-700 px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-amber-200 transition-colors">✏️ แก้ไขข้อมูล</button>
         <button @click="printDoc()" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-gray-200 transition-colors">พิมพ์ DOC</button>
         <button @click="printPdf()" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 transition-colors">Export PDF</button>
+        <button v-if="isAdmin" @click="deleteProfile" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-red-600 hover:text-white transition-colors">🗑️ ลบข้อมูล</button>
       </div>
     </div>
 
@@ -168,14 +169,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import html2pdf from 'html2pdf.js';
 import api from '../services/api';
 
 const route = useRoute();
+const router = useRouter();
 const profile = ref(null);
 const loading = ref(true);
+
+// Check admin role from localStorage
+const isAdmin = computed(() => {
+  try {
+    const u = JSON.parse(localStorage.getItem('user') || '{}');
+    return u.role === 'admin';
+  } catch { return false; }
+});
 
 const loadProfile = async () => {
     try {
@@ -235,6 +245,18 @@ const printPdf = () => {
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
     html2pdf().set(opt).from(element).save();
+};
+
+const deleteProfile = async () => {
+    const name = `${profile.value.rank} ${profile.value.first_name} ${profile.value.last_name}`;
+    if (!confirm(`⚠️ ยืนยันการลบข้อมูล\n\n"${name}"\n\nการดำเนินการนี้ไม่สามารถกู้คืนได้`)) return;
+    try {
+        await api.deleteAlumni(profile.value.id);
+        router.push('/');
+    } catch (e) {
+        console.error('Failed to delete', e);
+        alert('เกิดข้อผิดพลาด ไม่สามารถลบข้อมูลได้');
+    }
 };
 
 const printDoc = () => {

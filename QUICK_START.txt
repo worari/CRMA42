@@ -1,0 +1,182 @@
+# QUICK START GUIDE
+# Military Alumni Directory - Next.js Edition
+
+## ✅ What's been done
+
+Your project has been successfully migrated from Vue.js + Express to Next.js 14.
+All functionality remains the same, just with better architecture and performance.
+
+## 🚀 Getting Started (5 Minutes)
+
+### Step 1: Install Dependencies
+```bash
+npm install
+copy .env.example .env.local
+```
+
+### Step 2: Verify PostgreSQL Setup
+Make sure PostgreSQL is running on localhost:5432 with:
+- Username: postgres
+- Password: postgres
+
+Create the database:
+```bash
+createdb -U postgres crma42
+```
+
+### Step 3: Initialize Database
+```bash
+npm run init-db
+```
+This will create all tables and seed 20 sample records.
+
+### Step 4: Start Development Server
+```bash
+npm run dev
+```
+
+### Step 5: Open in Browser
+Go to: http://localhost:3000
+
+---
+
+## 📱 Test Credentials
+
+After running `init-db`, you can:
+1. Register a new account on the Registration page
+2. Account will be pending admin approval until approved
+3. An admin account doesn't exist by default - create one via SQL:
+```sql
+INSERT INTO users (id, email, password_hash, first_name, last_name, role, status)
+VALUES (gen_random_uuid(), 'admin@test.com', '$2a$10$...', 'Admin', 'User', 'admin', 'approved');
+```
+
+Or just register normally and approve yourself via the admin panel after fixing role manually in DB.
+
+---
+
+## 📂 Important Files
+
+- `.env.local` - Environment variables (already created)
+- `app/` - Next.js pages and API routes
+- `lib/` - Database, auth, and API utilities
+- `components/` - Reusable React components
+- `scripts/init_db.js` - Database initialization
+
+---
+
+## 📚 Project Structure
+
+```
+app/api/           → Backend API routes
+app/(authenticated)/ → Protected pages (require login)
+app/(public)/      → Public pages (login, register)
+components/        → React components
+lib/               → Utilities & services
+```
+
+---
+
+## 🔑 Key Commands
+
+```bash
+# Development
+npm run dev                 # Start dev server on :3000
+
+# Production
+npm run build              # Build for production
+npm start                  # Start production server
+
+# Database
+npm run init-db            # Initialize PostgreSQL database
+
+# Lint
+npm run lint               # Check code quality
+
+# Smoke test
+npm run smoke              # Start app and verify /login, /register, API auth guard
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### Port 3000 already in use?
+```bash
+npm run dev -- -p 3001
+```
+
+### PostgreSQL connection error?
+Check `.env.local` and verify PostgreSQL credentials:
+```bash
+psql -U postgres -h localhost -d crma42
+```
+
+### Database tables not found?
+Run initialization again:
+```bash
+npm run init-db
+```
+
+### Clear Next.js cache?
+```bash
+rm -rf .next
+npm run dev
+```
+
+---
+
+## 📖 Documentation
+
+1. **NEXTJS_MIGRATION.md** - Complete migration details
+2. **MIGRATION_COMPLETE.md** - What was converted
+3. **README.md** - Original project info
+
+---
+
+## ✨ Features Available
+
+✅ User Registration & Login
+✅ Role-Based Security (User/Admin)
+✅ Alumni Directory with Search
+✅ Profile Management (Create/Read/Update/Delete)
+✅ Admin User Approval System
+✅ Dashboard with Statistics
+✅ Mobile Responsive Design
+✅ JWT Authentication
+✅ PostgreSQL Database
+
+---
+
+## 🆘 Something's Not Working?
+
+1. Check `.env.local` contains all required variables
+2. Verify PostgreSQL is running: `psql -U postgres`
+3. Verify database exists: `psql -l | grep crma42`
+4. Check logs in terminal for error messages
+5. Try clearing cache: `rm -rf .next && npm run dev`
+
+---
+
+## 📞 Support
+
+Refer to:
+- **backend/** folder - Original Express code for reference
+- **frontend/** folder - Original Vue code for reference
+
+All original files are kept for reference during development.
+
+---
+
+## 🎓 Learning Resources
+
+- [Next.js Docs](https://nextjs.org/docs)
+- [React Docs](https://react.dev)
+- [Tailwind CSS](https://tailwindcss.com)
+- [PostgreSQL](https://www.postgresql.org/docs/)
+
+---
+
+**Ready?** Run: `npm install && npm run init-db && npm run dev`
+
+Then visit: http://localhost:3000 🚀

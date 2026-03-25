@@ -60,6 +60,7 @@
             :key="alumni.id" 
             :profile="alumni"
             @click="$router.push(`/profile/${alumni.id}`)"
+            @delete="handleDelete"
             class="transform hover:-translate-y-1 transition-all duration-300"
           />
         </div>
@@ -77,6 +78,7 @@
 import { ref, watch, onMounted, computed } from 'vue';
 import { useAlumniStore } from '../store/alumniStore';
 import AlumniCard from '../components/AlumniCard.vue';
+import api from '../services/api';
 
 const store = useAlumniStore();
 
@@ -129,4 +131,14 @@ onMounted(() => {
   store.initSocket();
   fetchFiltered();
 });
+
+const handleDelete = async (id) => {
+  try {
+    await api.deleteAlumni(id);
+    fetchFiltered();
+  } catch (e) {
+    console.error('Failed to delete', e);
+    alert('เกิดข้อผิดพลาด ไม่สามารถลบข้อมูลได้');
+  }
+};
 </script>

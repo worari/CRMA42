@@ -1,0 +1,51 @@
+{
+  "name": "military-alumni-system",
+  "version": "1.0.0",
+  "description": "Military Alumni Directory - Next.js Full Stack",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:api": "vitest run tests/api",
+    "test:ui": "vitest run tests/ui",
+    "smoke": "node scripts/smoke_test.js",
+    "init-db": "node scripts/init_db.js"
+  },
+  "dependencies": {
+    "@line/bot-sdk": "^8.0.0",
+    "@line/liff": "^2.22.4",
+    "axios": "^1.5.0",
+    "bcryptjs": "^3.0.3",
+    "chart.js": "^4.5.1",
+    "dotenv": "^16.3.1",
+    "html2pdf.js": "^0.10.1",
+    "jsonwebtoken": "^9.0.3",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.294.0",
+    "next": "^14.0.0",
+    "pg": "^8.11.3",
+    "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1",
+    "socket.io-client": "^4.7.2",
+    "thai-address-database": "^0.0.30",
+    "xlsx": "^0.18.5",
+    "zustand": "^4.4.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.15",
+    "eslint": "^8.50.0",
+    "eslint-config-next": "^14.0.0",
+    "jsdom": "^25.0.1",
+    "postcss": "^8.4.29",
+    "tailwindcss": "^3.3.3",
+    "vitest": "^2.1.8"
+  }
+}

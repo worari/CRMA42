@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Garuda Seal</title>
+  <desc id="desc">Thai official style emblem for document header.</desc>
+  <defs>
+    <linearGradient id="gold" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fde68a" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+  </defs>
+  <g fill="url(#gold)" stroke="#7c2d12" stroke-width="10" stroke-linejoin="round">
+    <path d="M56 224c70-10 110-42 144-104 16 40 24 66 56 88-44 16-88 22-132 16-18-2-38-2-68 0z" />
+    <path d="M456 224c-70-10-110-42-144-104-16 40-24 66-56 88 44 16 88 22 132 16 18-2 38-2 68 0z" />
+    <path d="M256 118c42 0 76 34 76 76 0 44-24 86-76 138-52-52-76-94-76-138 0-42 34-76 76-76z" />
+    <path d="M186 318c-34 30-54 66-58 108l62-36 30 54 36-70z" />
+    <path d="M326 318c34 30 54 66 58 108l-62-36-30 54-36-70z" />
+  </g>
+  <circle cx="256" cy="190" r="34" fill="#991b1b" />
+</svg>

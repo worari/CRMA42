@@ -1,0 +1,67 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Next.js
+/.next/
+/out/
+next.config.js.bak
+*.tsbuildinfo
+
+# Production
+/build/
+/dist/
+
+# Environment variables (IMPORTANT: Keep sensitive data out of git)
+.env
+.env.local
+.env.*.local
+.env.production.local
+.env.test.local
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.log
+
+# Database
+*.sqlite
+*.sqlite3
+postgresql/
+pgdata/
+
+# OS & System
+.DS_Store
+Thumbs.db
+*.exe
+
+# Backup & Temporary files
+*.bak
+*.tmp
+*~
+*.old
+
+# Cache
+.eslintcache
+.stylelintcache
+
+# Turbopack
+.turbo/
+
+# Legacy project directories (kept for reference only)
+# Uncomment to exclude from git:
+# /backend/
+# /frontend/
+

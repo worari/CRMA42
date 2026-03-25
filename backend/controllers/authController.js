@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const secretKey = process.env.JWT_SECRET || 'crma42_secret_key';
 
 // @desc    Register a new user
@@ -10,14 +12,24 @@ const secretKey = process.env.JWT_SECRET || 'crma42_secret_key';
 // @access  Public
 const register = async (req, res) => {
     try {
-        const { email, password, military_id, first_name, last_name } = req.body;
+        const { email, password, phone_number, first_name, last_name } = req.body;
+        const normalizedEmail = String(email || '').trim().toLowerCase();
+        const normalizedPhone = String(phone_number || '').replace(/\D/g, '');
         
-        if (!email || !password || !first_name || !last_name) {
+        if (!normalizedEmail || !password || !first_name || !last_name) {
             return res.status(400).json({ message: 'Please provide all required fields' });
         }
 
+        if (!EMAIL_REGEX.test(normalizedEmail)) {
+            return res.status(400).json({ message: 'Please provide a valid email address' });
+        }
+
+        if (!/^\d{10}$/.test(normalizedPhone)) {
+            return res.status(400).json({ message: 'Please provide a valid 10-digit phone number' });
+        }
+
         // Check if user already exists
-        const userExists = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        const userExists = await pool.query('SELECT * FROM users WHERE email = $1', [normalizedEmail]);
         if (userExists.rows.length > 0) {
             return res.status(400).json({ message: 'User already exists' });
         }
@@ -31,9 +43,9 @@ const register = async (req, res) => {
         const status = 'pending'; // Default status
 
         const newUser = await pool.query(
-            `INSERT INTO users (id, email, password_hash, military_id, first_name, last_name, role, status)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, email, first_name, last_name, role, status`,
-            [id, email, hashedPassword, military_id, first_name, last_name, role, status]
+            `INSERT INTO users (id, email, password_hash, phone_number, military_id, first_name, last_name, role, status)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id, email, phone_number, first_name, last_name, role, status`,
+            [id, normalizedEmail, hashedPassword, normalizedPhone, normalizedPhone, first_name, last_name, role, status]
         );
 
         res.status(201).json({
@@ -110,7 +122,7 @@ const login = async (req, res) => {
 // @access  Private/Admin
 const getUsers = async (req, res) => {
     try {
-        const result = await pool.query('SELECT id, email, military_id, first_name, last_name, role, status, created_at FROM users ORDER BY created_at DESC');
+        const result = await pool.query('SELECT id, email, COALESCE(phone_number, military_id) AS phone_number, first_name, last_name, role, status, created_at FROM users ORDER BY created_at DESC');
         res.json(result.rows);
     } catch (error) {
         console.error('Error fetching users:', error);

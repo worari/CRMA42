@@ -1,22 +1,24 @@
 # Military Preparatory School Alumni Directory
 
-Enterprise grade Monorepo for Alumni Directory management.
+## ✅ Migrated to Next.js 14
+
+This project has been successfully converted from Vue.js + Express.js to a modern **Next.js 14 full-stack application**.
+
 
 ## Setup Instructions
 
-Ensure you have PostgreSQL running locally on `localhost:5432` with username `postgres` and password `postgres`. Create a database named `crma42`.
+Ensure you have PostgreSQL running locally on localhost:5432.
 
-### 1. Database & Backend
-```bash
-cd backend
+### 1. Initialize
 npm install
-npm run init-db  # Creates schema and seeds 20 records
-npm run dev      # Starts API on http://localhost:3000
-```
+copy .env.example .env.local
+createdb -U postgres crma42
+npm run init-db
 
-### 2. Frontend
-```bash
-cd ../frontend
-npm install
-npm run dev      # Starts Vue on http://localhost:5173
-```
+### 2. Start Development  
+npm run dev
+
+Opens on http://localhost:3000
+
+### 3. Run Smoke Test
+npm run smoke
