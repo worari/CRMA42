@@ -9,8 +9,9 @@ export const dynamic = 'force-dynamic';
 export async function POST(req) {
   try {
     const { email, password } = await req.json();
+    const normalizedEmail = String(email || '').trim().toLowerCase();
     
-    if (!email || !password) {
+    if (!normalizedEmail || !password) {
       return Response.json(
         { message: 'Please provide email and password' },
         { status: 400 }
@@ -18,7 +19,7 @@ export async function POST(req) {
     }
 
     // Find user by email
-    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    const result = await pool.query('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [normalizedEmail]);
     if (result.rows.length === 0) {
       return Response.json(
         { message: 'Invalid credentials' },
@@ -93,6 +94,13 @@ export async function POST(req) {
     if (error?.code === '42P01') {
       return Response.json(
         { message: 'Database tables not found. Please run: npm run init-db' },
+        { status: 500 }
+      );
+    }
+
+    if (error?.code === '42501') {
+      return Response.json(
+        { message: 'Database permission denied. Grant the application user access to schema public and the users table.' },
         { status: 500 }
       );
     }

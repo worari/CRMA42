@@ -152,6 +152,21 @@ export async function POST(req) {
     });
   } catch (error) {
     console.error('OTP verify error:', error);
+
+    if (error?.code === '42P01') {
+      return Response.json(
+        { message: 'Database tables not found. Please run: npm run init-db' },
+        { status: 500 }
+      );
+    }
+
+    if (error?.code === '42501') {
+      return Response.json(
+        { message: 'Database permission denied. Grant the application user access to schema public and auth tables.' },
+        { status: 500 }
+      );
+    }
+
     return Response.json({ message: 'Server Error' }, { status: 500 });
   }
 }
