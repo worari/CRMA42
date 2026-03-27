@@ -12,7 +12,8 @@
     "test:api": "vitest run tests/api",
     "test:ui": "vitest run tests/ui",
     "smoke": "node scripts/smoke_test.js",
-    "init-db": "node scripts/init_db.js"
+    "init-db": "node scripts/init_db.js",
+    "seed-db": "node scripts/init_db.js"
   },
   "dependencies": {
     "@line/bot-sdk": "^8.0.0",
