@@ -4,13 +4,17 @@ const crypto = require('crypto');
 require('dotenv').config({ path: '.env.local' });
 require('dotenv').config();
 
-const pool = new Pool({
-  user: process.env.DB_USER || 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  database: process.env.DB_NAME || 'crma42',
-  password: process.env.DB_PASSWORD || 'postgres',
-  port: parseInt(process.env.DB_PORT || '5433'),
-});
+const poolConfig = process.env.DATABASE_URL
+  ? { connectionString: process.env.DATABASE_URL }
+  : {
+      user: process.env.DB_USER || 'postgres',
+      host: process.env.DB_HOST || 'localhost',
+      database: process.env.DB_NAME || 'crma42',
+      password: process.env.DB_PASSWORD || 'postgres',
+      port: parseInt(process.env.DB_PORT || '5432', 10),
+    };
+
+const pool = new Pool(poolConfig);
 
 const createTestAdmin = async () => {
   const client = await pool.connect();

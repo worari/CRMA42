@@ -3,13 +3,17 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config({ path: '.env.local' });
 require('dotenv').config();
 
-const pool = new Pool({
-  user: process.env.DB_USER || 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  database: process.env.DB_NAME || 'crma42',
-  password: process.env.DB_PASSWORD || 'postgres',
-  port: parseInt(process.env.DB_PORT || '5432', 10),
-});
+const poolConfig = process.env.DATABASE_URL
+  ? { connectionString: process.env.DATABASE_URL }
+  : {
+      user: process.env.DB_USER || 'postgres',
+      host: process.env.DB_HOST || 'localhost',
+      database: process.env.DB_NAME || 'crma42',
+      password: process.env.DB_PASSWORD || 'postgres',
+      port: parseInt(process.env.DB_PORT || '5432', 10),
+    };
+
+const pool = new Pool(poolConfig);
 
 const CURRENT_PDPA_VERSION =
   process.env.NEXT_PUBLIC_PDPA_VERSION ||
@@ -507,6 +511,38 @@ const SEED_SETTINGS = [
     updated_at: '2026-03-01T08:00:00.000Z',
   },
 ];
+
+async function assertSchemaPrivileges(client) {
+  const privilegeCheck = await client.query(
+    `
+      SELECT
+        current_user AS current_user,
+        current_database() AS current_database,
+        has_schema_privilege(current_user, 'public', 'USAGE') AS has_usage,
+        has_schema_privilege(current_user, 'public', 'CREATE') AS has_create
+    `
+  );
+
+  const privilege = privilegeCheck.rows[0];
+  if (privilege.has_usage && privilege.has_create) {
+    return;
+  }
+
+  const error = new Error(
+    [
+      `Database user "${privilege.current_user}" does not have enough privileges on schema public in database "${privilege.current_database}".`,
+      'Required: USAGE, CREATE on schema public.',
+      'Fix with a privileged PostgreSQL account:',
+      `  GRANT USAGE, CREATE ON SCHEMA public TO ${privilege.current_user};`,
+      `  GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO ${privilege.current_user};`,
+      `  GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public TO ${privilege.current_user};`,
+      `  ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO ${privilege.current_user};`,
+      `  ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO ${privilege.current_user};`,
+    ].join('\n')
+  );
+  error.code = 'SCHEMA_PRIVILEGE_CHECK_FAILED';
+  throw error;
+}
 
 async function ensureSchema(client) {
   await client.query(`
@@ -1332,6 +1368,7 @@ async function seedAll(client) {
 async function initDatabase() {
   const client = await pool.connect();
   try {
+    await assertSchemaPrivileges(client);
     await client.query('BEGIN');
     await ensureSchema(client);
     await seedAll(client);
@@ -1343,7 +1380,11 @@ async function initDatabase() {
     console.log('ℹ️  Override admin credentials with SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD in .env.local');
   } catch (error) {
     await client.query('ROLLBACK');
-    console.error('❌ Error setting up database:', error);
+    if (error?.code === '42501' || error?.code === 'SCHEMA_PRIVILEGE_CHECK_FAILED') {
+      console.error('❌ Error setting up database:\n' + error.message);
+    } else {
+      console.error('❌ Error setting up database:', error);
+    }
     process.exitCode = 1;
   } finally {
     client.release();
